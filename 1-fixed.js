@@ -13,7 +13,14 @@ function toFixed( num, precision ) {
     }
     let multiplicator = Math.pow(10, precision);
     num = parseFloat((num * multiplicator).toFixed(11));
-    return (Math.round(num) / multiplicator).toFixed(precision);
+    if(num === 0){
+        return num.toFixed();
+    }
+    let result = Math.round(num) / multiplicator;
+    if(result < 0.001){
+        return 0.001.toFixed(precision);
+    }
+    return result.toFixed(precision);
 }
 
 
@@ -21,6 +28,9 @@ function parseNumberF(a){
     let number = parseFloat(a);
     if(isNaN(number)){
         throw new Error("Is not number in array");
+    }
+    if(number < 0){
+        throw new Error("Number is lower then 0");
     }
     return number;
 }
@@ -30,7 +40,7 @@ function getPercent(a){
     return toFixed((numericA * 100), 3);
 }
 
-const data = ['1.5', '3', '6', '1.5', '0.333455'];
+const data = ['1.5', '3', '6', '1.5', '0.00'];
 
 const result = data.map(function(el){
     return getPercent(el);
