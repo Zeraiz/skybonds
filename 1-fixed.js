@@ -25,22 +25,15 @@ function parseNumberF(a){
     return number;
 }
 
-function add(accumulator, a) {
+function getPercent(a){
     let numericA = parseNumberF(a);
-    return accumulator + numericA;
+    return toFixed((numericA * 100), 3);
 }
 
-function getPercent(a, sum){
-    let numericA = parseNumberF(a);
-    return toFixed((numericA * 100 / sum), 3);
-}
-
-const data = ['1.5', '3', '6', '1.5'];
-
-const sum = data.reduce(add, 0);
+const data = ['1.5', '3', '6', '1.5', '0.333455'];
 
 const result = data.map(function(el){
-    return getPercent(el, sum);
+    return getPercent(el);
 });
 
 console.log(result);
