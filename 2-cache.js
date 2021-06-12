@@ -132,6 +132,11 @@ function CacheLRU(cache, limit) {
         },
 
         delete(key) {
+            let result = cache.get(key);
+            if(isEmpty(result)){
+                return false;
+            }
+            detach(result.value.node);
             return cache.delete(key);
         },
 
@@ -140,6 +145,9 @@ function CacheLRU(cache, limit) {
         },
 
         clear() {
+            head = null;
+            tail = null;
+            size = 0;
             return cache.clear()
         },
 
