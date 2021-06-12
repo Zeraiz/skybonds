@@ -40,10 +40,27 @@ function getPercent(a){
     return toFixed((numericA * 100), 3);
 }
 
-const data = ['1.5', '3', '6', '1.5', '0.00'];
+function getPercentFromSum(a){
+    let numericA = parseNumberF(a);
+    return toFixed((numericA * 100 / sum), 3);
+}
+
+const data = ['1', '1', '1'];
 
 const result = data.map(function(el){
     return getPercent(el);
 });
 
+
+function add(accumulator, a) {
+    let numericA = parseNumberF(a);
+    return accumulator + numericA;
+}
+const sum = data.reduce(add, 0);
+
+const resultPercentFromSum = data.map(function(el){
+    return getPercentFromSum(el, sum);
+});
+
+console.log(resultPercentFromSum);
 console.log(result);
