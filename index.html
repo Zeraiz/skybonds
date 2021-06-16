@@ -1,0 +1,44 @@
+<html>
+<body>
+<div>
+    <div>ssdadzz
+        <div>sadad</div>
+    </div>
+    <div>asdasd</div></div>
+<script>
+
+
+
+
+function searchInNode (el) {
+    let result = [];
+    let nodeList = [];
+    nodeList.push(el);
+    while (nodeList.length > 0) {
+        let currentNode = nodeList.shift();
+        result.push(currentNode);
+        for (let i = 0; i < currentNode.childNodes.length; i++) {
+            nodeList.push(currentNode.childNodes[i]);
+        }
+    }
+    return result;
+}
+console.log(searchInNode(document.documentElement));
+
+
+
+    // function searchInNode(el){
+    //     console.log(el.tagName);
+    //     el.childNodes.forEach(el => {
+    //         searchInNode(el);
+    //     });
+    // }
+    searchInNode(document.documentElement);
+    /**
+     *
+     * @param el
+     */
+
+</script>
+</body>
+</html>

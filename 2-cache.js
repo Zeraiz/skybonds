@@ -118,7 +118,6 @@ function CacheLRU(cache, limit) {
             } else {
                 if (size === limit) {
                     this.delete(tail.key);
-                    detach(tail);
                 }
                 node = new Node(key);
                 setHead(node);
@@ -242,7 +241,7 @@ const cacheDecorator = function cacheDecorator(f, cache, loadIsinHandler) {
             const cachedIsin = cache.get(key);
             if (isEmpty(cachedIsin)) {
                 notIn.push(isin);
-                cache.set(key, {isLoading: true});
+                cache.set(key, {isin: isin, isLoading: true});
             } else {
                 result.push(cachedIsin);
             }
@@ -255,7 +254,7 @@ const cacheDecorator = function cacheDecorator(f, cache, loadIsinHandler) {
                 const tempIsinData = {isin: el.isin, data: el.data};
                 cache.set(key, tempIsinData);
                 if (typeof loadIsinHandler === "function") {
-                    loadIsinHandler(tempIsinData);
+                    loadIsinHandler({date: date, isin: el.isin, data: el.data});
                 }
                 result.push(tempIsinData);
             });
@@ -292,13 +291,18 @@ const getBondsData = async ({date, isins}) => {
                 number: Math.random(),
             }
         };
-    }).filter(isin => isin.isin !== "XS0971721963");
+    });
 };
 
 const getBoundsDataCached = cacheDecorator(getBondsData, cache, function (response) {
     console.log("Статус инструмента изменился: ", response);
 });
 
+/**
+ * Вызов информации по isins вне асинхронной фуцнкции,
+ * для примера запроса инструментов в нескольких асинхронных запросах
+ * @type {Promise<{isLoading, data: *, isin: *}[]>}
+ */
 let result = getBoundsDataCached({
     date: '20180120',
     isins: ['XS0971721963']
